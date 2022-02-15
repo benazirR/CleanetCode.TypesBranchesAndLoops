@@ -1,18 +1,17 @@
-﻿Console.WriteLine("Добро пожаловать в игру 'Угадай число'!");
+﻿bool isWin = false;
+bool isContinue = true;
+int maxValue = 999;
+Random randomNumberGenerator = new Random();
+int secretNumber = randomNumberGenerator.Next(0, maxValue);
+int attemptsCounter = 0;
+
+Console.WriteLine("Добро пожаловать в игру 'Угадай число'!");
 Console.WriteLine("Как вас зовут?");
 string? userName = Console.ReadLine();
-int maxValue = 999;
-
 Console.WriteLine(
     $"Привет {userName}. " +
     $"Я загадал тебе число от 0 до {maxValue}. " +
     $"Побробуй отгадать");
-
-Random rnd = new Random();
-int secretNumber = rnd.Next(maxValue);
-bool isWin = false;
-int counter = 0;
-
 
 while (!isWin)
 {
@@ -20,40 +19,43 @@ while (!isWin)
     bool isIntNumber = false;
     do
     {
-        Console.WriteLine($"Введи число от 0 до {maxValue}:");
+        Console.WriteLine($"Введи число от 0 до {maxValue}:(для выхода наберите 'exit')");
         string? userInput = Console.ReadLine();
         isIntNumber = int.TryParse(userInput, out userNumber);
-        counter++;
+        attemptsCounter++;
 
-        if (!isIntNumber)
+        if (userInput == "exit")
+        {
+            isContinue = false;
+        }
+        else if (!isIntNumber)
         {
             Console.WriteLine($"Вы ввели {userInput}. Нужно ввести число от 0 до {maxValue}.");
-            continue;
         }
         else if (userNumber < 0 || userNumber > maxValue)
         {
             Console.WriteLine($"Вы вышли за предел допустимого значения ({userNumber})");
-            continue;
         }
-        else
-        {
-            if (userNumber > secretNumber)
-            {
-                Console.WriteLine($"Ваше число ({userNumber}) больше, чем загаданное.");
-            }
-            else if (userNumber < secretNumber)
-            {
-                Console.WriteLine($"Ваше число ({userNumber}) меньше, чем загаданное.");
-            }
-            else
-            {
-                isWin = true;
-                Console.WriteLine($"Поздравляю {userName}, вы победили! " +
-                    $"Количество попыток: {counter}");
-                break;
-            }
-        }
+    } while (!isIntNumber && isContinue || userNumber < 0 || userNumber > maxValue);
 
-    } while (isIntNumber);
+    if (!isContinue)
+    {
+        Console.WriteLine("Вы вышли из игры.");
+        break;
+    }
+    else if (userNumber > secretNumber)
+    {
+        Console.WriteLine($"Ваше число ({userNumber}) больше, чем загаданное.");
+    }
+    else if (userNumber < secretNumber)
+    {
+        Console.WriteLine($"Ваше число ({userNumber}) меньше, чем загаданное.");
+    }
+    else
+    {
+        isWin = true;
+        Console.WriteLine($"Поздравляю {userName}, вы победили!\n " +
+            $"Количество попыток: {attemptsCounter}");
+    }
 }
 
