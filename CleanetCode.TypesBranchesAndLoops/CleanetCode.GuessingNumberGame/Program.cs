@@ -22,7 +22,6 @@ while (!isWin)
         Console.WriteLine($"Введи число от 0 до {maxValue}:(для выхода наберите 'exit')");
         string? userInput = Console.ReadLine();
         isIntNumber = int.TryParse(userInput, out userNumber);
-        attemptsCounter++;
 
         if (userInput == "exit")
         {
@@ -37,6 +36,8 @@ while (!isWin)
             Console.WriteLine($"Вы вышли за предел допустимого значения ({userNumber})");
         }
     } while (!isIntNumber && isContinue || userNumber < 0 || userNumber > maxValue);
+    
+    attemptsCounter++;
 
     if (!isContinue)
     {
